@@ -33,7 +33,7 @@ const NavBar = () => {
               <HiOutlineMagnifyingGlass className='absolute top-2 right-3 text-2xl' />
             </div>
             <div className='flex gap-4 items-center'>
-              <div className='relative'>
+              <div onClick={()=> navigate("/wishlist")} className='relative cursor-pointer'>
                 <CiHeart className='text-[32px]'/>
                 <div className='absolute -right-2 -top-2 text-white bg-primary size-5 rounded-full text-xs flex items-center justify-center'>{wishlist.length}</div>
               </div>
