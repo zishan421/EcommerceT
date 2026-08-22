@@ -75,9 +75,6 @@ const NavBar = () => {
       </Container>
       <div className='border-b w-screen text-black'></div>
       <div className='relative border-b md:hidden'>
-        <div className='border-b px-4 py-2'>
-          <span className='font-medium'>Exclusive</span>
-        </div>
         <div className='px-4 py-2'>
           <button
             type='button'
