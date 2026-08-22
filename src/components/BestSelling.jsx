@@ -35,7 +35,7 @@ const BestSelling = () => {
                         <Button className='mt-5'>View All</Button>
                     </div>
                 </div>
-                <div className='flex justify-between mt-15'>
+                <div className='mt-10 grid grid-cols-2 gap-x-3 gap-y-8 md:mt-15 md:flex md:justify-between'>
                     <Card
                         imgSrc={coat}
 
