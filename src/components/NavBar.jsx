@@ -38,9 +38,9 @@ const NavBar = () => {
     <>
       <Container>
         <div className='flex justify-between items-center py-4 md:py-7'>
-          <div>
-            <img src={Logo} alt="" />
-          </div>
+          <button type='button' onClick={() => goTo('/')} aria-label='Go to home page' className='cursor-pointer'>
+            <img src={Logo} alt='Exclusive' />
+          </button>
           <ul className='hidden md:flex gap-12'>
             <NavLink to="/"><li>Home</li></NavLink>
             <NavLink to="/contact"><li>Contact</li></NavLink>
@@ -110,7 +110,9 @@ const NavBar = () => {
           onClick={(event) => event.stopPropagation()}
         >
           <div className='flex items-center justify-between border-b pb-5'>
-            <img src={Logo} alt="" />
+            <button type='button' onClick={() => goTo('/')} aria-label='Go to home page' className='cursor-pointer'>
+              <img src={Logo} alt='Exclusive' />
+            </button>
             <button type='button' onClick={closeMenu} aria-label='Close navigation menu' className='text-2xl cursor-pointer'>
               <HiOutlineX />
             </button>

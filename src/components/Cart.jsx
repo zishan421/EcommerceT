@@ -14,11 +14,11 @@ const Cart = () => {
         <Container>
             <BreadCrumbs/>
             <div>
-                <div className='flex justify-between py-6 px-10 rounded-sm  shadow-sm'>
-                    <h4>Product</h4>
-                    <h4>Price</h4>
-                    <h4>Quantity</h4>
-                    <h4>Subtotal</h4>
+                <div className='flex py-6 px-10 rounded-sm shadow-sm'>
+                    <h4 className='w-[35%]'>Product</h4>
+                    <h4 className='w-[22%] text-right'>Price</h4>
+                    <h4 className='w-[25%] text-right'>Quantity</h4>
+                    <h4 className='w-[18%] text-right'>Subtotal</h4>
                 </div>
                 {
                     data.map((item)=>{
@@ -26,8 +26,11 @@ const Cart = () => {
                         imgSrc={item.thumbnail}
                         id={item.id}
                         title={item.title}
+                        selectedColor={item.selectedColor}
+                        selectedSize={item.selectedSize}
                         price={item.price}
-                        subTotal={item.price}
+                        quantity={item.quantity ?? 1}
+                        subTotal={item.price * (item.quantity ?? 1)}
                         />
                     })
                 }

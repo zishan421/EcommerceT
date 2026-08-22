@@ -11,12 +11,13 @@ import { CiHeart } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
 import { Rate } from 'antd'
 import { useParams } from 'react-router'
+import { useNavigate } from 'react-router'
 import delivery from '../assets/delivery.png'
 import returns from '../assets/return.png'
 import SecHead from './SecHead'
 import Card from './Card'
 import { useDispatch, useSelector } from 'react-redux'
-import { WishlistReducer } from '../Slices/ProductSlice'
+import { CartReducer, WishlistReducer } from '../Slices/ProductSlice'
 
 const ProductDetails = () => {
 
@@ -25,8 +26,17 @@ const ProductDetails = () => {
     let [product, setProduct] = useState(null)
     let [images, setImages] = useState([])
     let [loading, setLoading] = useState(true)
+    let [quantity, setQuantity] = useState(1)
+    let [selectedColor, setSelectedColor] = useState('Blue')
+    let [selectedSize, setSelectedSize] = useState('M')
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const wishlistItems = useSelector((state) => state.Products.Wishlist)
+
+    const handleBuyNow = () => {
+        dispatch(CartReducer({ ...product, quantity, selectedColor, selectedSize }))
+        navigate('/cart')
+    }
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -97,27 +107,25 @@ const ProductDetails = () => {
                             <div className='flex gap-6 my-6'>
                                 <h2 className='font-inter text-[20px]'>Colours:</h2>
                                 <div className='flex gap-2 justify-center items-center'>
-                                    <div className='size-5 bg-[#A0BCE0] rounded-full border-black'></div>
-                                    <div className='size-5 bg-primary rounded-full'></div>
+                                    <button type='button' onClick={() => setSelectedColor('Blue')} aria-label='Select blue color' className={`size-5 bg-[#A0BCE0] rounded-full cursor-pointer ${selectedColor === 'Blue' ? 'ring-2 ring-black ring-offset-2' : ''}`}></button>
+                                    <button type='button' onClick={() => setSelectedColor('Red')} aria-label='Select red color' className={`size-5 bg-primary rounded-full cursor-pointer ${selectedColor === 'Red' ? 'ring-2 ring-black ring-offset-2' : ''}`}></button>
                                 </div>
                             </div>
                             <div className='flex gap-6'>
                                 <h2 className='font-inter text-[20px]'>Size:</h2>
                                 <div className='flex gap-2'>
-                                    <div className='border border-[#979797] rounded-sm size-8 flex items-center justify-center text-[14px] font-medium hover:bg-primary hover:border-none hover:text-white'>XS</div>
-                                    <div className='border border-[#979797] rounded-sm size-8 flex items-center justify-center text-[14px] font-medium hover:bg-primary hover:border-none hover:text-white'>S</div>
-                                    <div className='border border-[#979797] rounded-sm size-8 flex items-center justify-center text-[14px] font-medium hover:bg-primary hover:border-none hover:text-white'>M</div>
-                                    <div className='border border-[#979797] rounded-sm size-8 flex items-center justify-center text-[14px] font-medium hover:bg-primary hover:border-none hover:text-white'>L</div>
-                                    <div className='border border-[#979797] rounded-sm size-8 flex items-center justify-center text-[14px] font-medium hover:bg-primary hover:border-none hover:text-white'>XL</div>
+                                    {['XS', 'S', 'M', 'L', 'XL'].map((size) => (
+                                        <button type='button' key={size} onClick={() => setSelectedSize(size)} className={`border border-[#979797] rounded-sm size-8 flex items-center justify-center text-[14px] font-medium cursor-pointer ${selectedSize === size ? 'bg-primary border-primary text-white' : 'hover:bg-primary hover:border-primary hover:text-white'}`}>{size}</button>
+                                    ))}
                                 </div>
                             </div>
                             <div className='mt-6 mb-10 flex gap-4'>
                                 <div className='flex'>
-                                    <div className='border border-[#979797] size-11 text-2xl flex items-center justify-center hover:bg-primary hover:border-none hover:text-white'>-</div>
-                                    <div className='border border-[#979797] w-40 h-11 font-medium text-[20px] flex items-center justify-center hover:bg-primary hover:border-none hover:text-white'>2</div>
-                                    <div className='border border-[#979797] size-11 text-2xl flex items-center justify-center hover:bg-primary hover:border-none hover:text-white'>+</div>
+                                    <button type='button' onClick={() => setQuantity((value) => Math.max(1, value - 1))} aria-label='Decrease quantity' className='border border-[#979797] size-11 text-2xl flex items-center justify-center hover:bg-primary hover:border-none hover:text-white cursor-pointer'>-</button>
+                                    <div className='border border-[#979797] w-40 h-11 font-medium text-[20px] flex items-center justify-center'>{quantity}</div>
+                                    <button type='button' onClick={() => setQuantity((value) => value + 1)} aria-label='Increase quantity' className='border border-[#979797] size-11 text-2xl flex items-center justify-center hover:bg-primary hover:border-none hover:text-white cursor-pointer'>+</button>
                                 </div>
-                                <div className='w-41.25 h-11 border border-[#979797] flex items-center justify-center hover:bg-primary hover:border-none hover:text-white'>Buy Now</div>
+                                <button type='button' onClick={handleBuyNow} className='w-41.25 h-11 border border-[#979797] flex items-center justify-center hover:bg-primary hover:border-none hover:text-white cursor-pointer'>Buy Now</button>
                                 <button onClick={() => dispatch(WishlistReducer(product))} aria-label='Toggle wishlist' className='border border-[#979797] flex items-center justify-center cursor-pointer'>
                                     {wishlistItems.some((item) => item.id === product.id) ? (
                                         <FaHeart className='text-[32px] size-10 text-primary' />

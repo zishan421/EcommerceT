@@ -59,6 +59,7 @@ const Card = ({ id, imgSrc, percent, title, price, disPrice, review, rating, pro
         const matchItem = cartItems.some(item => item.id === id)
 
         if (matchItem) {
+            dispatch(CartReducer(productDetails))
             notify(true)
             return
         }
