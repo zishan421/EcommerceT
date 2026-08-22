@@ -16,7 +16,7 @@ const Banner = () => {
         autoplaySpeed: 10000,
         appendDots: dots => (
             <div>
-                <ul className='absolute bottom-8 left-[40%] translate-x-[50%]'> {dots} </ul>
+                <ul className='absolute bottom-8 left-1/2 -translate-x-1/2'> {dots} </ul>
             </div>
         ),
         customPaging: i => (
@@ -28,8 +28,8 @@ const Banner = () => {
     return (
         <div>
             <Container>
-                <div className="flex gap-10 ">
-                    <div className='w-[20%] border-r'>
+                <div className="flex gap-10">
+                    <div className='hidden w-[20%] border-r md:block'>
                         <ul className='text-[16px] pt-10 space-y-4'>
                             <li className='flex gap-12 items-center'>Woman’s Fashion <FaAngleRight className='text-2xl' /> </li>
                             <li className='flex gap-19 items-center'>Men’s Fashion <FaAngleRight className='text-2xl' /> </li>
@@ -41,7 +41,7 @@ const Banner = () => {
                             <li>Groceries</li>
                         </ul>
                     </div>
-                    <div className='w-[80%] mt-10 min-w-0'>
+                    <div className='mt-4 w-full min-w-0 md:mt-10 md:w-[80%]'>
                         <Slider.default {...settings}>
                             <div>
                                 <img src={BannerImg} alt="" />

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Rate } from 'antd'
 import { CiHeart } from "react-icons/ci";
+import { FaHeart } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
@@ -72,14 +73,18 @@ const Card = ({ id, imgSrc, percent, title, price, disPrice, review, rating, pro
 
     return (
         <>
-            <div className='w-67.5 group'>
+            <div className='w-full group sm:w-67.5'>
                 <div className='relative bg-[#F5F5F5] overflow-hidden'>
                     <span className='absolute left-3 top-3 px-3 py-2 bg-primary rounded-sm text-xs text-white'>{percent}%</span>
                     <img onClick={handleProductDetails} src={imgSrc} className='px-10 py-8.75' alt="" />
                     <div className='absolute top-3 right-3 space-y-2'>
                         <div className=' size-8.5 flex items-center justify-center bg-white rounded-full'>
                             <button onClick={handleWishlist} aria-label='Toggle wishlist' className='cursor-pointer'>
-                                <CiHeart className={`text-2xl ${wishlistItems.some(item => item.id === wishlistId) ? 'text-primary' : ''}`} />
+                                {wishlistItems.some(item => item.id === wishlistId) ? (
+                                    <FaHeart className='text-2xl text-primary' />
+                                ) : (
+                                    <CiHeart className='text-2xl' />
+                                )}
                             </button>
                         </div>
                         <div className='h-8.5 w-8.5 flex items-center justify-center bg-white rounded-full'>

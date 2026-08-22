@@ -26,17 +26,33 @@ const FlashSales = () => {
     autoplay: true,
     autoplaySpeed: 10000,
     nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />
+    prevArrow: <SamplePrevArrow />,
+    responsive: [
+      {
+        breakpoint: 770,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
+      {
+        breakpoint: 430,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   function SampleNextArrow(props) {
     const { className, style, onClick } = props;
     return (
       <div
-        className='w-11.5 h-11.5 rounded-full bg-[#F5F5F5] flex items-center justify-center absolute -top-12 right-4 cursor-pointer'
+        className='flex size-8 items-center justify-center rounded-full bg-[#F5F5F5] absolute -top-10 right-2 cursor-pointer md:size-11.5 md:-top-12 md:right-4'
         onClick={onClick}
       >
-        <FaArrowRight className='text-2xl text-black'/>
+        <FaArrowRight className='text-base text-black md:text-2xl'/>
       </div>
     );
   }
@@ -45,10 +61,10 @@ const FlashSales = () => {
     const { className, style, onClick } = props;
     return (
       <div
-        className='w-11.5 h-11.5 rounded-full bg-[#F5F5F5] flex items-center justify-center absolute -top-12 right-18 cursor-pointer'
+        className='flex size-8 items-center justify-center rounded-full bg-[#F5F5F5] absolute -top-10 right-12 cursor-pointer md:size-11.5 md:-top-12 md:right-18'
         onClick={onClick}
         >
-        <FaArrowLeft className='text-2xl text-black '/>
+        <FaArrowLeft className='text-base text-black md:text-2xl '/>
       </div>
     );
   }
@@ -68,18 +84,20 @@ const FlashSales = () => {
   }, [])
 
   return (
-    <div className='mt-35'>
+    <div className='mt-20 md:mt-35'>
       <Container>
-        <div className='flex gap-21.75 items-end'>
+        <div className='flex flex-col items-start gap-3 md:flex-row md:items-end md:gap-21.75'>
           <SecHead
             title="Today’s"
             heading="Flash Sales"
+            compact
           />
           <CountDown
             Days={count.days}
             Hours={count.hours}
             Minutes={count.minutes}
             Seconds={count.seconds}
+            compact
           />
         </div>
         <div className='mt-10'>

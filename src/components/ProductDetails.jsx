@@ -8,6 +8,7 @@ import KeyBoard from '../assets/keyboard.png'
 import Monitor from '../assets/monitor.png'
 import Chair from '../assets/chair.png'
 import { CiHeart } from "react-icons/ci";
+import { FaHeart } from "react-icons/fa";
 import { Rate } from 'antd'
 import { useParams } from 'react-router'
 import delivery from '../assets/delivery.png'
@@ -118,7 +119,11 @@ const ProductDetails = () => {
                                 </div>
                                 <div className='w-41.25 h-11 border border-[#979797] flex items-center justify-center hover:bg-primary hover:border-none hover:text-white'>Buy Now</div>
                                 <button onClick={() => dispatch(WishlistReducer(product))} aria-label='Toggle wishlist' className='border border-[#979797] flex items-center justify-center cursor-pointer'>
-                                    <CiHeart className={`text-[32px] size-10 ${wishlistItems.some((item) => item.id === product.id) ? 'text-primary' : ''}`} />
+                                    {wishlistItems.some((item) => item.id === product.id) ? (
+                                        <FaHeart className='text-[32px] size-10 text-primary' />
+                                    ) : (
+                                        <CiHeart className='text-[32px] size-10' />
+                                    )}
                                 </button>
                             </div>
                             <div className='border border-[#979797] rounded-sm '>
