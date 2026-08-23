@@ -57,10 +57,10 @@ const NavBar = () => {
                 <CiHeart className='text-[32px]'/>
                 <div className='absolute -right-2 -top-2 text-white bg-primary size-5 rounded-full text-xs flex items-center justify-center'>{wishlist.length}</div>
               </div>
-              <div onClick={()=> navigate("/cart")} className='relative'>
+              <button type='button' onClick={() => goTo('/cart')} aria-label='Open cart' className='relative cursor-pointer'>
                 <IoCartOutline className='text-[32px]'/>
                 <div className='absolute -right-2 -top-2 text-white bg-primary size-5 rounded-full text-xs flex items-center justify-center'>{data.length}</div>
-              </div>
+              </button>
             </div>
           </div>
           <button

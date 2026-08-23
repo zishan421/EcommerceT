@@ -28,3 +28,7 @@
 .categoryItem:hover .icon svg g line {
   stroke: #fff;
 }
+
+.signup-password-input::-ms-reveal {
+  display: none;
+}
