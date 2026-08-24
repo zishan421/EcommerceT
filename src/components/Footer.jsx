@@ -8,6 +8,13 @@ import { TbBrandTwitter } from "react-icons/tb";
 import { FaInstagram } from "react-icons/fa";
 import { RiLinkedinLine } from "react-icons/ri";
 import { LuSendHorizontal } from "react-icons/lu";
+import { NavLink } from 'react-router'
+
+const accountLinks = [
+    { label: 'Cart', path: '/cart' },
+    { label: 'Wishlist', path: '/wishlist' },
+    { label: 'Shop', path: '/shop' },
+]
 
 const Footer = () => {
     return (
@@ -35,10 +42,10 @@ const Footer = () => {
                         <div className='pt-20'>
                             <ul className='space-y-6'>
                                 <li className='font-semibold text-[20px]'>My Account</li>
-                                <li className='w-54.25'>Login / Register</li>
-                                <li>Cart</li>
-                                <li>Wishlist</li>
-                                <li>Shop</li>
+                                <li className='w-54.25'><NavLink to='/login'>Login</NavLink> / <NavLink to='/signup'>Register</NavLink></li>
+                                {accountLinks.map((link) => (
+                                    <li key={link.path}><NavLink to={link.path}>{link.label}</NavLink></li>
+                                ))}
                             </ul>
                         </div>
                         <div className='pt-20'>
