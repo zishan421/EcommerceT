@@ -2,7 +2,7 @@ import React from 'react'
 import Container from './Container'
 import SecHead from './SecHead'
 import CategoryItem from './CategoryItem'
-import Slider from 'react-slick'
+import SlickSlider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import { FaArrowLeft, FaArrowRight, FaCamera, FaDesktop, FaGamepad, FaHeadphones, FaMobileScreenButton, FaStopwatch } from 'react-icons/fa6'
@@ -15,6 +15,8 @@ const categories = [
   ['HeadPhones', FaHeadphones],
   ['Gaming', FaGamepad],
 ]
+
+const Slider = SlickSlider.default ?? SlickSlider
 
 const arrowStyle = 'absolute -top-12 flex h-11.5 w-11.5 items-center justify-center rounded-full bg-[#F5F5F5] cursor-pointer'
 
