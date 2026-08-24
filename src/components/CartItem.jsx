@@ -32,7 +32,7 @@ const CartItem = ({id, imgSrc, title, selectedColor, selectedSize, price, quanti
         <div className='flex items-center py-6 px-10 rounded-sm shadow-sm'>
                 <div className='flex gap-5 items-center w-[35%] min-w-0 relative'>
                     <button type='button' onClick={removeItem} aria-label='Remove item' className='cursor-pointer bg-primary size-5 rounded-full text-white flex justify-center items-center absolute top-0 left-0'>x</button>
-                    <img className='size-13.5 shrink-0' src={imgSrc} alt="" />
+                    <img className='size-13.5 shrink-0 object-cover' src={imgSrc || 'https://placehold.co/120x120/eeeeee/666666?text=No+Image'} alt={title || 'Product'} />
                     <div className='min-w-0'>
                         <h4 className='whitespace-normal wrap-break-word'>{title}</h4>
                         {options && <p className='text-sm text-secondary'>{options}</p>}

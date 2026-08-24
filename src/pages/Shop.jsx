@@ -21,15 +21,19 @@ const Shop = () => {
 
     useEffect(() => {
         setLoading(true)
+        const isSpeakerSearch = category === 'speakers'
         const url = category
-            ? `https://dummyjson.com/products/category/${category}`
+            ? (isSpeakerSearch
+                ? 'https://dummyjson.com/products/search?q=speaker'
+                : `https://dummyjson.com/products/category/${category}`)
             : 'https://dummyjson.com/products'
 
         fetch(url)
             .then(res => res.json())
             .then((data) => {
-                dispatch(ProductReducer(data.products))
-                setSelectedCategory(category)
+                const productsList = Array.isArray(data.products) ? data.products : []
+                dispatch(ProductReducer(productsList))
+                setSelectedCategory(isSpeakerSearch ? null : category)
             })
             .then(()=> setLoading(false))
     }, [category, dispatch])
@@ -41,7 +45,9 @@ const Shop = () => {
         setSelectedCategory(prev => prev === item ? null : item)
     }
     const clearCategory = () => setSelectedCategory(null)
-    const displayedProducts = selectedCategory ? (products || []).filter(p => p.category === selectedCategory) : (products || [])
+    const displayedProducts = category === 'speakers'
+        ? (products || [])
+        : selectedCategory ? (products || []).filter(p => p.category === selectedCategory) : (products || [])
    
     return (
         <div className='py-20'>

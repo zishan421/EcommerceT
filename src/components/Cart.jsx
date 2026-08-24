@@ -42,7 +42,7 @@ const Cart = () => {
                 {
                     data.map((item)=>{
                         return <CartItem
-                        imgSrc={item.thumbnail}
+                        imgSrc={item.thumbnail || item.imgSrc}
                         id={item.id}
                         title={item.title}
                         selectedColor={item.selectedColor}

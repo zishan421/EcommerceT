@@ -13,7 +13,16 @@ const Card = ({ id, imgSrc, percent, title, price, disPrice, review, rating, pro
     let navigate = useNavigate()
     const cartItems = useSelector(state => state.Products.Cart)
     const wishlistItems = useSelector(state => state.Products.Wishlist)
-    const product = productDetails ?? { id: id ?? title, imgSrc, title, price, disPrice, review, rating }
+    const product = productDetails ?? {
+        id: id ?? title,
+        imgSrc,
+        thumbnail: imgSrc,
+        title,
+        price,
+        disPrice,
+        review,
+        rating
+    }
     const productId = product.id ?? title
 
     const notify = (isAlreadyAdded) => {
@@ -57,8 +66,13 @@ const Card = ({ id, imgSrc, percent, title, price, disPrice, review, rating, pro
 
     const handleCart = () => {
         const matchItem = cartItems.some(item => item.id === productId)
+        const normalizedProduct = {
+            ...product,
+            imgSrc: product.imgSrc ?? product.thumbnail,
+            thumbnail: product.thumbnail ?? product.imgSrc,
+        }
 
-        dispatch(CartReducer(product))
+        dispatch(CartReducer(normalizedProduct))
         notify(matchItem)
     }
 
