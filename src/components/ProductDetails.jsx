@@ -18,19 +18,29 @@ import SecHead from './SecHead'
 import Card from './Card'
 import { useDispatch, useSelector } from 'react-redux'
 import { CartReducer, WishlistReducer } from '../Slices/ProductSlice'
-
-const defaultColors = ['Blue', 'Red']
-const defaultSizes = ['XS', 'S', 'M', 'L', 'XL']
+import { clothingCategories, shoeCategories } from '../data/categories'
 
 const getProductOptions = (product, id) => {
     if (product?.id === 'jbl-music-speaker' || id === 'jbl-music-speaker') {
         return { colors: ['Black'], sizes: [] }
     }
 
-    return {
-        colors: product?.colors ?? defaultColors,
-        sizes: product?.sizes ?? defaultSizes,
+    if (product?.colors || product?.sizes) {
+        return {
+            colors: product.colors ?? [],
+            sizes: product.sizes ?? [],
+        }
     }
+
+    if (clothingCategories.includes(product?.category)) {
+        return { colors: ['Blue', 'Red'], sizes: ['XS', 'S', 'M', 'L', 'XL'] }
+    }
+
+    if (shoeCategories.includes(product?.category)) {
+        return { colors: ['Black', 'White'], sizes: ['39', '40', '41', '42', '43'] }
+    }
+
+    return { colors: [], sizes: [] }
 }
 
 const ProductDetails = () => {

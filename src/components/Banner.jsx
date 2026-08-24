@@ -1,10 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Container from './Container'
 import { FaAngleRight } from "react-icons/fa6";
 import Slider from "react-slick";
 import BannerImg from '../assets/banner.jpg'
+import { useNavigate } from 'react-router';
+import { categories } from '../data/categories';
 
 const Banner = () => {
+
+    const navigate = useNavigate()
+    const [womenOpen, setWomenOpen] = useState(false)
+    const [menOpen, setMenOpen] = useState(false)
 
     const settings = {
         dots: true,
@@ -31,14 +37,39 @@ const Banner = () => {
                 <div className="flex gap-10">
                     <div className='hidden w-[20%] border-r md:block'>
                         <ul className='text-[16px] pt-10 space-y-4'>
-                            <li className='flex gap-12 items-center'>Woman’s Fashion <FaAngleRight className='text-2xl' /> </li>
-                            <li className='flex gap-19 items-center'>Men’s Fashion <FaAngleRight className='text-2xl' /> </li>
-                            <li>Electronics</li>
-                            <li>Home & Lifestyle</li>
-                            <li>Medicine</li>
-                            <li>Sports & Outdoor</li>
-                            <li>Health & Beauty</li>
-                            <li>Groceries</li>
+                            {categories.map(({ label: name, slug, subcategories }) => {
+                                const isWomen = slug === 'womens-dresses'
+                                const isMen = slug === 'mens-shirts'
+
+                                return (
+                                    <li key={slug}>
+                                        <div className='flex items-center justify-between'>
+                                            <button type='button' onClick={() => navigate(`/shop?category=${slug}`)} className='cursor-pointer'>
+                                                {name}
+                                            </button>
+                                            {(isWomen || isMen) && (
+                                                <button type='button' onClick={() => isWomen ? setWomenOpen((open) => !open) : setMenOpen((open) => !open)} aria-label={`${name} subcategories`} className='cursor-pointer'>
+                                                    <FaAngleRight className={`text-2xl ${(isWomen ? womenOpen : menOpen) ? 'rotate-90' : ''}`} />
+                                                </button>
+                                            )}
+                                        </div>
+                                        {isWomen && womenOpen && (
+                                            <div className='ml-4 mt-2 space-y-2 text-sm'>
+                                                {subcategories.map(([subLabel, subSlug]) => (
+                                                    <button type='button' key={subSlug} onClick={() => navigate(`/shop?category=${subSlug}`)} className='block cursor-pointer'>{subLabel}</button>
+                                                ))}
+                                            </div>
+                                        )}
+                                        {isMen && menOpen && (
+                                            <div className='ml-4 mt-2 space-y-2 text-sm'>
+                                                {subcategories.map(([subLabel, subSlug]) => (
+                                                    <button type='button' key={subSlug} onClick={() => navigate(`/shop?category=${subSlug}`)} className='block cursor-pointer'>{subLabel}</button>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </li>
+                                )
+                            })}
                         </ul>
                     </div>
                     <div className='mt-4 w-full min-w-0 md:mt-10 md:w-[80%]'>

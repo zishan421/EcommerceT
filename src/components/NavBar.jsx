@@ -9,6 +9,7 @@ import { BiCategory } from "react-icons/bi";
 import { RiArrowRightSLine } from "react-icons/ri";
 import { NavLink, useNavigate } from "react-router";
 import { useSelector } from 'react-redux';
+import { categories } from '../data/categories';
 
 const NavBar = () => {
 
@@ -89,18 +90,12 @@ const NavBar = () => {
         </div>
         {isCategoryOpen && (
           <nav className='border-t px-4 py-2 text-sm'>
-            <button type='button' className='flex w-full items-center justify-between py-1.5 text-left'>
-              Women's Fashion <RiArrowRightSLine className='text-xl' />
-            </button>
-            <button type='button' className='flex w-full items-center justify-between py-1.5 text-left'>
-              Men's Fashion <RiArrowRightSLine className='text-xl' />
-            </button>
-            <button type='button' className='block w-full py-1.5 text-left'>Electronics</button>
-            <button type='button' className='block w-full py-1.5 text-left'>Home & Lifestyle</button>
-            <button type='button' className='block w-full py-1.5 text-left'>Medicine</button>
-            <button type='button' className='block w-full py-1.5 text-left'>Sports & Outdoor</button>
-            <button type='button' className='block w-full py-1.5 text-left'>Health & Beauty</button>
-            <button type='button' className='block w-full py-1.5 text-left'>Groceries</button>
+            {categories.map(({ label, slug, subcategories }) => (
+              <button type='button' key={slug} onClick={() => goTo(`/shop?category=${slug}`)} className='flex w-full items-center justify-between py-1.5 text-left cursor-pointer'>
+                {label}
+                {subcategories && <RiArrowRightSLine className='text-xl' />}
+              </button>
+            ))}
           </nav>
         )}
       </div>

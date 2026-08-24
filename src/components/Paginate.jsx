@@ -59,8 +59,10 @@ const Paginate = ({ itemsPerPage, products: productsProp }) => {
         setItemOffset(newOffset);
     };
     return (
-        <>
-            <Items currentItems={currentItems} />
+        <div className='w-full'>
+            <div className='flex flex-wrap gap-x-10 gap-y-7.5'>
+                <Items currentItems={currentItems} />
+            </div>
             <PaginateComponent
                 breakLabel="..."
                 nextLabel=""
@@ -69,7 +71,7 @@ const Paginate = ({ itemsPerPage, products: productsProp }) => {
                 pageCount={pageCount}
                 previousLabel=""
                 renderOnZeroPageCount={null}
-                containerClassName="flex gap-2 items-center"
+                containerClassName="mt-8 flex w-full justify-start gap-2 items-center"
                 pageClassName=""
                 pageLinkClassName="inline-block bg-black px-4 py-1 text-white text-sm rounded cursor-pointer"
                 activeClassName="opacity-90"
@@ -77,7 +79,7 @@ const Paginate = ({ itemsPerPage, products: productsProp }) => {
                 previousClassName=""
                 nextClassName="px-2"
             />
-        </>
+        </div>
     )
 }
 

@@ -6,24 +6,33 @@ import Paginate from '../components/Paginate'
 import Skeleton from '../components/Skeleton'
 import { useDispatch, useSelector } from 'react-redux'
 import { ProductReducer } from '../Slices/ProductSlice'
+import { useSearchParams } from 'react-router'
 
 const Shop = () => {
 
-    // const [products, setProducts] = useState([])
     const [value, setValue] = useState(6)
     const [loading, setLoading] = useState(true)
     const [selectedCategory, setSelectedCategory] = useState(null)
+    const [searchParams] = useSearchParams()
+    const category = searchParams.get('category')
 
         const dispatch = useDispatch()
         const products = useSelector(state => state.Products.value) 
 
     useEffect(() => {
-        fetch('https://dummyjson.com/products')
+        setLoading(true)
+        const url = category
+            ? `https://dummyjson.com/products/category/${category}`
+            : 'https://dummyjson.com/products'
+
+        fetch(url)
             .then(res => res.json())
-            .then((data) => dispatch(ProductReducer(data.products)))
-            // .then((data) => setProducts(data.products))
+            .then((data) => {
+                dispatch(ProductReducer(data.products))
+                setSelectedCategory(category)
+            })
             .then(()=> setLoading(false))
-    }, [])
+    }, [category, dispatch])
 
    
     const uniqueCategory = [...new Set((products || []).map((item)=> item.category))]
@@ -77,17 +86,12 @@ const Shop = () => {
                             </ul>
                         </div>
                         <div className='w-[80%]'>
-                            <div className='flex flex-wrap gap-x-10 gap-y-7.5'>
+                            <div>
                                 {
                                     loading ?
-                                    <>
-                                    <Skeleton/>
-                                    <Skeleton/>
-                                    <Skeleton/>
-                                    <Skeleton/>
-                                    <Skeleton/>
-                                    <Skeleton/>
-                                    </>
+                                    <div className='flex flex-wrap gap-x-10 gap-y-7.5'>
+                                        {Array.from({ length: value }, (_, index) => <Skeleton key={index} />)}
+                                    </div>
                                     :
                                     <Paginate itemsPerPage={value} products={displayedProducts} />
                                 }
