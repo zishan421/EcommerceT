@@ -9,8 +9,24 @@ import shelf from '../assets/shelf.png'
 import JBL from '../assets/jbl.png'
 import CountDown from './CountDown'
 import { countDownDateAndTime } from 'countdown-date-time';
+import { useNavigate } from 'react-router';
+
+const musicProduct = {
+    id: 'jbl-music-speaker',
+    title: 'JBL Boombox Speaker',
+    price: 960,
+    rating: 5,
+    colors: ['Black'],
+    sizes: [],
+    description: 'Powerful JBL sound for an immersive music experience.',
+    thumbnail: JBL,
+    images: [JBL],
+    reviews: [],
+}
 
 const BestSelling = () => {
+
+    const navigate = useNavigate()
 
     const conduct_date = '2026-09-12 12:12:12';
     const [count, setCount] = useState({})
@@ -32,7 +48,7 @@ const BestSelling = () => {
                     </div>
                     <div className="flex justify-between">
                         <h2 className='text-[36px] font-semibold mt-6'>Best Selling Products</h2>
-                        <Button className='mt-5'>View All</Button>
+                        <Button onClick={() => navigate('/shop')} className='mt-5'>View All</Button>
                     </div>
                 </div>
                 <div className='mt-10 grid grid-cols-2 gap-x-3 gap-y-8 md:mt-15 md:flex md:justify-between'>
@@ -91,7 +107,7 @@ const BestSelling = () => {
                                 <h3 className='text-xs font-medium text-center'>Seconds</h3>
                             </div>
                         </div>
-                        <button className='mt-8 bg-[#00FF66] px-12 py-4 rounded-sm text-white'>Buy Now!</button>
+                        <button type='button' onClick={() => navigate(`/productDetails/${musicProduct.id}`, { state: { product: musicProduct } })} className='mt-8 bg-[#00FF66] px-12 py-4 rounded-sm text-white cursor-pointer'>Buy Now!</button>
                     </div>
                     <div className='mt-19.75 mr-12.5 mb-22.75'>
                         <img src={JBL} alt="" />

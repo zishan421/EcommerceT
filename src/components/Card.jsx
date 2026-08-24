@@ -13,8 +13,8 @@ const Card = ({ id, imgSrc, percent, title, price, disPrice, review, rating, pro
     let navigate = useNavigate()
     const cartItems = useSelector(state => state.Products.Cart)
     const wishlistItems = useSelector(state => state.Products.Wishlist)
-    const wishlistProduct = productDetails ?? { id: id ?? title, imgSrc, title, price, disPrice, review, rating }
-    const wishlistId = wishlistProduct.id ?? title
+    const product = productDetails ?? { id: id ?? title, imgSrc, title, price, disPrice, review, rating }
+    const productId = product.id ?? title
 
     const notify = (isAlreadyAdded) => {
         if (!isAlreadyAdded) {
@@ -56,20 +56,14 @@ const Card = ({ id, imgSrc, percent, title, price, disPrice, review, rating, pro
     let dispatch = useDispatch()
 
     const handleCart = () => {
-        const matchItem = cartItems.some(item => item.id === id)
+        const matchItem = cartItems.some(item => item.id === productId)
 
-        if (matchItem) {
-            dispatch(CartReducer(productDetails))
-            notify(true)
-            return
-        }
-
-        dispatch(CartReducer(productDetails))
-        notify(false)
+        dispatch(CartReducer(product))
+        notify(matchItem)
     }
 
     const handleWishlist = () => {
-        dispatch(WishlistReducer(wishlistProduct))
+        dispatch(WishlistReducer(product))
     }
 
     return (
@@ -81,7 +75,7 @@ const Card = ({ id, imgSrc, percent, title, price, disPrice, review, rating, pro
                     <div className='absolute top-3 right-3 space-y-2'>
                         <div className=' size-8.5 flex items-center justify-center bg-white rounded-full'>
                             <button onClick={handleWishlist} aria-label='Toggle wishlist' className='cursor-pointer'>
-                                {wishlistItems.some(item => item.id === wishlistId) ? (
+                                {wishlistItems.some(item => item.id === productId) ? (
                                     <FaHeart className='text-2xl text-primary' />
                                 ) : (
                                     <CiHeart className='text-2xl' />

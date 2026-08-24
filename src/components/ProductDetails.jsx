@@ -10,7 +10,7 @@ import Chair from '../assets/chair.png'
 import { CiHeart } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
 import { Rate } from 'antd'
-import { useParams } from 'react-router'
+import { useLocation, useParams } from 'react-router'
 import { useNavigate } from 'react-router'
 import delivery from '../assets/delivery.png'
 import returns from '../assets/return.png'
@@ -19,19 +19,36 @@ import Card from './Card'
 import { useDispatch, useSelector } from 'react-redux'
 import { CartReducer, WishlistReducer } from '../Slices/ProductSlice'
 
+const defaultColors = ['Blue', 'Red']
+const defaultSizes = ['XS', 'S', 'M', 'L', 'XL']
+
+const getProductOptions = (product, id) => {
+    if (product?.id === 'jbl-music-speaker' || id === 'jbl-music-speaker') {
+        return { colors: ['Black'], sizes: [] }
+    }
+
+    return {
+        colors: product?.colors ?? defaultColors,
+        sizes: product?.sizes ?? defaultSizes,
+    }
+}
+
 const ProductDetails = () => {
 
     let { id } = useParams()
+    const location = useLocation()
 
     let [product, setProduct] = useState(null)
     let [images, setImages] = useState([])
+    let [selectedImage, setSelectedImage] = useState(null)
     let [loading, setLoading] = useState(true)
     let [quantity, setQuantity] = useState(1)
-    let [selectedColor, setSelectedColor] = useState('Blue')
-    let [selectedSize, setSelectedSize] = useState('M')
+    let [selectedColor, setSelectedColor] = useState(null)
+    let [selectedSize, setSelectedSize] = useState(null)
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const wishlistItems = useSelector((state) => state.Products.Wishlist)
+    const { colors: productColors, sizes: productSizes } = getProductOptions(product, id)
 
     const handleBuyNow = () => {
         dispatch(CartReducer({ ...product, quantity, selectedColor, selectedSize }))
@@ -40,11 +57,25 @@ const ProductDetails = () => {
 
     useEffect(() => {
         const fetchProduct = async () => {
+            const applyProduct = (data) => {
+                const options = getProductOptions(data, id)
+                setProduct(data)
+                setImages(Array.isArray(data.images) ? data.images : [])
+                setSelectedImage(data.thumbnail)
+                setSelectedColor(options.colors[0] ?? null)
+                setSelectedSize(options.sizes[0] ?? null)
+            }
+
+            if (location.state?.product) {
+                applyProduct(location.state.product)
+                setLoading(false)
+                return
+            }
+
             try {
                 const response = await fetch(`https://dummyjson.com/products/${id}`)
                 const data = await response.json()
-                setProduct(data)
-                setImages(Array.isArray(data.images) ? data.images : [])
+                applyProduct(data)
             } catch (error) {
                 console.error('Failed to load product:', error)
                 setProduct(null)
@@ -55,7 +86,7 @@ const ProductDetails = () => {
         }
 
         if (id) fetchProduct()
-    }, [id])
+    }, [id, location.state])
 
     if (loading) {
         return (
@@ -87,13 +118,17 @@ const ProductDetails = () => {
                     <div className='flex gap-7.5'>
                         <div className='space-y-4'>
                             {images.length > 0 ? (
-                                images.map((item) => <img className='w-34.5 h-42' key={item} src={item} alt={product?.title || 'Product image'} />)
+                                images.map((item) => (
+                                    <button type='button' key={item} onClick={() => setSelectedImage(item)} className={`block cursor-pointer border ${selectedImage === item ? 'border-black' : 'border-transparent'}`}>
+                                        <img className='w-34.5 h-42 object-contain' src={item} alt={product?.title || 'Product image'} />
+                                    </button>
+                                ))
                             ) : (
-                                <img src={img2} alt="Product thumbnail" />
+                                <img className='w-34.5 h-42 object-contain' src={img2} alt="Product thumbnail" />
                             )}
                         </div>
                         <div>
-                            <img src={product?.thumbnail} alt="Main product" />
+                            <img src={selectedImage || product?.thumbnail} alt="Main product" />
                         </div>
                         <div className='w-100'>
                             <h2 className='text-2xl font-semibold font-inter'>{product?.title}</h2>
@@ -102,23 +137,28 @@ const ProductDetails = () => {
                                 <h4>({product?.reviews?.length ?? 0} Reviews)</h4>
                                 <h4 className='text-green-400 border-l pl-2'>In Stock</h4>
                             </div>
-                            <h2 className='text-2xl'>${product?.price}</h2>
+                            <h2 className='text-2xl'>${(Number(product?.price) * quantity).toFixed(2)}</h2>
                             <p className='py-6 border-b'>{product?.description}</p>
-                            <div className='flex gap-6 my-6'>
-                                <h2 className='font-inter text-[20px]'>Colours:</h2>
-                                <div className='flex gap-2 justify-center items-center'>
-                                    <button type='button' onClick={() => setSelectedColor('Blue')} aria-label='Select blue color' className={`size-5 bg-[#A0BCE0] rounded-full cursor-pointer ${selectedColor === 'Blue' ? 'ring-2 ring-black ring-offset-2' : ''}`}></button>
-                                    <button type='button' onClick={() => setSelectedColor('Red')} aria-label='Select red color' className={`size-5 bg-primary rounded-full cursor-pointer ${selectedColor === 'Red' ? 'ring-2 ring-black ring-offset-2' : ''}`}></button>
+                            {productColors.length > 0 && (
+                                <div className='flex gap-6 my-6'>
+                                    <h2 className='font-inter text-[20px]'>Colours:</h2>
+                                    <div className='flex gap-2 justify-center items-center'>
+                                        {productColors.map((color) => (
+                                            <button type='button' key={color} onClick={() => setSelectedColor(color)} aria-label={`Select ${color} color`} className={`size-5 rounded-full cursor-pointer ${color === 'Black' ? 'bg-black' : color === 'Blue' ? 'bg-[#A0BCE0]' : 'bg-primary'} ${selectedColor === color ? 'ring-2 ring-black ring-offset-2' : ''}`}></button>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-                            <div className='flex gap-6'>
-                                <h2 className='font-inter text-[20px]'>Size:</h2>
-                                <div className='flex gap-2'>
-                                    {['XS', 'S', 'M', 'L', 'XL'].map((size) => (
-                                        <button type='button' key={size} onClick={() => setSelectedSize(size)} className={`border border-[#979797] rounded-sm size-8 flex items-center justify-center text-[14px] font-medium cursor-pointer ${selectedSize === size ? 'bg-primary border-primary text-white' : 'hover:bg-primary hover:border-primary hover:text-white'}`}>{size}</button>
-                                    ))}
+                            )}
+                            {productSizes.length > 0 ? (
+                                <div className='flex gap-6'>
+                                    <h2 className='font-inter text-[20px]'>Size:</h2>
+                                    <div className='flex gap-2'>
+                                        {productSizes.map((size) => (
+                                            <button type='button' key={size} onClick={() => setSelectedSize(size)} className={`border border-[#979797] rounded-sm size-8 flex items-center justify-center text-[14px] font-medium cursor-pointer ${selectedSize === size ? 'bg-primary border-primary text-white' : 'hover:bg-primary hover:border-primary hover:text-white'}`}>{size}</button>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
+                            ) : null}
                             <div className='mt-6 mb-10 flex gap-4'>
                                 <div className='flex'>
                                     <button type='button' onClick={() => setQuantity((value) => Math.max(1, value - 1))} aria-label='Decrease quantity' className='border border-[#979797] size-11 text-2xl flex items-center justify-center hover:bg-primary hover:border-none hover:text-white cursor-pointer'>-</button>

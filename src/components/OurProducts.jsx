@@ -9,8 +9,11 @@ import DogFood from '../assets/dogfood.png'
 import Dslr from '../assets/dslr.png'
 import Laptop from '../assets/laptop.png'
 import Button from './Button';
+import { useNavigate } from 'react-router';
 
 const OurProducts = () => {
+
+  const navigate = useNavigate()
 
     const settings = {
         dots: false,
@@ -151,7 +154,7 @@ const OurProducts = () => {
                     </div>
                 </Slider.default>
             </div>
-            <Button className='mx-auto block mt-15'>View All Products</Button>
+            <Button onClick={() => navigate('/shop')} className='mx-auto block mt-15'>View All Products</Button>
         </Container>
     </div>
   )
