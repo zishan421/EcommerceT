@@ -11,9 +11,61 @@ import { NavLink, useNavigate } from "react-router";
 import { useSelector } from 'react-redux';
 import { categories } from '../data/categories';
 
-const NavBar = () => {
+const navItems = [
+  { label: 'Home', to: '/', end: true },
+  { label: 'Contact', to: '/contact' },
+  { label: 'About', to: '/about' },
+  { label: 'Sign Up', to: '/signup' },
+]
 
-  let navigate = useNavigate()
+const SearchBox = ({ mobile = false }) => (
+  <div className={`relative bg-[#F5F5F5] ${mobile ? 'mt-6' : 'py-1.75 pl-5'}`}>
+    <input
+      type='text'
+      className={mobile ? 'w-full py-3 pl-4 pr-11 outline-none' : 'pr-17.5'}
+      placeholder='What are you looking for?'
+    />
+    <HiOutlineMagnifyingGlass className={`absolute right-3 ${mobile ? 'top-3' : 'top-2'} text-2xl`} />
+  </div>
+)
+
+const NavLinks = ({ mobile = false, onClick }) => {
+  const Wrapper = mobile ? 'nav' : 'ul'
+
+  return (
+    <Wrapper className={mobile ? 'mt-8 flex flex-col gap-6 text-lg' : 'hidden md:flex items-center gap-12'}>
+      {navItems.map(({ label, to, end }) => mobile ? (
+        <NavLink key={to} end={end} to={to} onClick={onClick} className='navbar-link'>
+          {label}
+        </NavLink>
+      ) : (
+        <li key={to}>
+          <NavLink end={end} to={to} onClick={onClick} className='navbar-link'>
+            {label}
+          </NavLink>
+        </li>
+      ))}
+    </Wrapper>
+  )
+}
+
+const ActionButton = ({ icon: Icon, label, count, onClick }) => (
+  <button type='button' onClick={onClick} aria-label={label} className='relative cursor-pointer'>
+    <Icon className='text-[32px]' />
+    <span className='absolute -right-2 -top-2 flex size-5 items-center justify-center rounded-full bg-primary text-xs text-white'>
+      {count}
+    </span>
+  </button>
+)
+
+const Actions = ({ items, onNavigate }) => (
+  <div className='flex gap-4 items-center'>
+    {items.map((item) => <ActionButton key={item.path} {...item} onClick={() => onNavigate(item.path)} />)}
+  </div>
+)
+
+const NavBar = () => {
+  const navigate = useNavigate()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isCategoryOpen, setIsCategoryOpen] = useState(false)
 
@@ -35,6 +87,11 @@ const NavBar = () => {
     navigate(path)
   }
 
+  const actions = [
+    { icon: CiHeart, label: 'Open wishlist', count: wishlist.length, path: '/wishlist' },
+    { icon: IoCartOutline, label: 'Open cart', count: data.length, path: '/cart' },
+  ]
+
   return (
     <>
       <Container>
@@ -42,27 +99,10 @@ const NavBar = () => {
           <button type='button' onClick={() => goTo('/')} aria-label='Go to home page' className='cursor-pointer'>
             <img src={Logo} alt='Exclusive' />
           </button>
-          <ul className='hidden md:flex gap-12'>
-            <NavLink to="/"><li>Home</li></NavLink>
-            <NavLink to="/contact"><li>Contact</li></NavLink>
-            <NavLink to="/about"><li>About</li></NavLink>
-            <NavLink to="/signup"><li>Sign Up</li></NavLink>
-          </ul>
+          <NavLinks />
           <div className='hidden md:flex gap-6 items-center'>
-            <div className='relative py-1.75 pl-5 bg-[#F5F5F5]'>
-              <input type="text" className='pr-17.5' placeholder='What are you looking for?' />
-              <HiOutlineMagnifyingGlass className='absolute top-2 right-3 text-2xl' />
-            </div>
-            <div className='flex gap-4 items-center'>
-              <div onClick={()=> navigate("/wishlist")} className='relative cursor-pointer'>
-                <CiHeart className='text-[32px]'/>
-                <div className='absolute -right-2 -top-2 text-white bg-primary size-5 rounded-full text-xs flex items-center justify-center'>{wishlist.length}</div>
-              </div>
-              <button type='button' onClick={() => goTo('/cart')} aria-label='Open cart' className='relative cursor-pointer'>
-                <IoCartOutline className='text-[32px]'/>
-                <div className='absolute -right-2 -top-2 text-white bg-primary size-5 rounded-full text-xs flex items-center justify-center'>{data.length}</div>
-              </button>
-            </div>
+            <SearchBox />
+            <Actions items={actions} onNavigate={goTo} />
           </div>
           <button
             type='button'
@@ -112,25 +152,10 @@ const NavBar = () => {
               <HiOutlineX />
             </button>
           </div>
-          <div className='relative mt-6 bg-[#F5F5F5]'>
-            <input type="text" className='w-full py-3 pl-4 pr-11 outline-none' placeholder='What are you looking for?' />
-            <HiOutlineMagnifyingGlass className='absolute top-3 right-3 text-2xl' />
-          </div>
-          <nav className='mt-8 flex flex-col gap-6 text-lg'>
-            <NavLink to='/' onClick={closeMenu}>Home</NavLink>
-            <NavLink to='/contact' onClick={closeMenu}>Contact</NavLink>
-            <NavLink to='/about' onClick={closeMenu}>About</NavLink>
-            <NavLink to='/signup' onClick={closeMenu}>Sign Up</NavLink>
-          </nav>
+          <SearchBox mobile />
+          <NavLinks mobile onClick={closeMenu} />
           <div className='mt-10 flex gap-6 border-t pt-6'>
-            <button type='button' onClick={() => goTo('/wishlist')} aria-label='Open wishlist' className='relative cursor-pointer'>
-              <CiHeart className='text-[32px]' />
-              <span className='absolute -right-2 -top-2 flex size-5 items-center justify-center rounded-full bg-primary text-xs text-white'>{wishlist.length}</span>
-            </button>
-            <button type='button' onClick={() => goTo('/cart')} aria-label='Open cart' className='relative cursor-pointer'>
-              <IoCartOutline className='text-[32px]' />
-              <span className='absolute -right-2 -top-2 flex size-5 items-center justify-center rounded-full bg-primary text-xs text-white'>{data.length}</span>
-            </button>
+            <Actions items={actions} onNavigate={goTo} />
           </div>
         </aside>
       </div>

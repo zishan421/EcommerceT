@@ -22,6 +22,41 @@
   @apply bg-primary border-2 border-white
 }
 
+.navbar-link {
+  position: relative;
+  display: inline-block;
+  padding: 0.35rem 0;
+  color: #000;
+  transition: color 200ms ease;
+}
+
+.navbar-link::after {
+  position: absolute;
+  right: 50%;
+  bottom: -0.35rem;
+  left: 50%;
+  height: 3px;
+  border-radius: 999px;
+  background: #DB4444;
+  box-shadow: 0 0 8px rgba(219, 68, 68, 0.85);
+  content: '';
+  opacity: 0;
+  transform: translateX(-50%) scaleX(0);
+  transition: width 220ms ease, opacity 220ms ease, transform 220ms ease;
+}
+
+.navbar-link:hover {
+  color: #DB4444;
+}
+
+.navbar-link:hover::after {
+  right: 0;
+  left: 0;
+  width: 100%;
+  opacity: 1;
+  transform: translateX(0) scaleX(1);
+}
+
 .categoryItem:hover .icon svg g path {
   stroke: #fff;
 }
@@ -32,3 +67,4 @@
 .signup-password-input::-ms-reveal {
   display: none;
 }
+
