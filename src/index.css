@@ -22,6 +22,70 @@
   @apply bg-primary border-2 border-white
 }
 
+.flash-sales-slider .slick-arrow,
+.category-slider .slick-arrow {
+  top: -2.5rem !important;
+  width: 2.875rem !important;
+  height: 2.875rem !important;
+  z-index: 20;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 9999px;
+  background: #f5f5f5 !important;
+  color: #000;
+  cursor: pointer;
+  transform: none !important;
+}
+
+.flash-sales-slider .slick-arrow {
+  top: -5.375rem !important;
+}
+
+.flash-sales-slider .slick-prev {
+  right: 4.5rem !important;
+  left: auto !important;
+}
+
+.flash-sales-slider .slick-next {
+  right: 1rem !important;
+  left: auto !important;
+}
+
+.flash-sales-slider .slick-prev,
+.category-slider .slick-prev {
+  right: 4.125rem !important;
+  left: auto !important;
+}
+
+.flash-sales-slider .slick-next,
+.category-slider .slick-next {
+  right: 1rem !important;
+  left: auto !important;
+}
+
+.category-slider .slick-prev {
+  right: 7.125rem !important;
+}
+
+.category-slider .slick-next {
+  right: 4rem !important;
+}
+
+.flash-sales-slider .slick-arrow::before,
+.category-slider .slick-arrow::before {
+  display: none !important;
+  content: none !important;
+}
+
+.flash-sales-slider .slick-arrow:hover,
+.category-slider .slick-arrow:hover {
+  background: #f5f5f5 !important;
+  color: #000 !important;
+  opacity: 1 !important;
+}
+
 .navbar-link {
   position: relative;
   display: inline-block;

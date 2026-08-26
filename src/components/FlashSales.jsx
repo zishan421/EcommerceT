@@ -11,6 +11,7 @@ import Chair from '../assets/chair.png'
 import Slider from "react-slick";
 import Button from './Button';
 import { useNavigate } from 'react-router';
+import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
 
 const flashProducts = [
   { imgSrc: GamePad, percent: '-40', title: 'HAVIT HV-G92 Gamepad', price: '160', disPrice: '140', review: '88' },
@@ -25,8 +26,12 @@ const flashProducts = [
 
 const sliderSettings = {
   dots: false,
+  infinite: true,
+  speed: 500,
   slidesToShow: 4,
   slidesToScroll: 2,
+  nextArrow: <button type='button' className='!absolute !-top-12 !right-4 !z-20 !flex !h-11.5 !w-11.5 cursor-pointer items-center justify-center rounded-full bg-[#F5F5F5] text-black before:hidden'><FiArrowRight size={28} strokeWidth={2.25} /></button>,
+  prevArrow: <button type='button' className='!absolute !-top-12 !right-18 !z-20 !flex !h-11.5 !w-11.5 cursor-pointer items-center justify-center rounded-full bg-[#F5F5F5] text-black before:hidden'><FiArrowLeft size={28} strokeWidth={2.25} /></button>,
   responsive: [
     { breakpoint: 770, settings: { slidesToShow: 2, slidesToScroll: 2 } },
     { breakpoint: 430, settings: { slidesToShow: 1, slidesToScroll: 1 } },
@@ -67,7 +72,7 @@ const FlashSales = () => {
             compact
           />
         </div>
-        <div className='mt-10'>
+        <div className='flash-sales-slider relative z-10 mt-10'>
           <Slider.default {...sliderSettings}>
             {flashProducts.map((product, index) => (
               <div key={`${product.title}-${index}`}>
