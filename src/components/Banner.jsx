@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Container from './Container'
 import { FaAngleRight } from "react-icons/fa6";
 import Slider from "react-slick";
@@ -25,7 +25,7 @@ const Banner = () => {
                 <ul className='absolute bottom-8 left-1/2 -translate-x-1/2'> {dots} </ul>
             </div>
         ),
-        customPaging: i => (
+        customPaging: () => (
             <div className='w-3.5 h-3.5 bg-secondary  rounded-full'>
             </div>
         )
@@ -75,16 +75,24 @@ const Banner = () => {
                     <div className='mt-4 w-full min-w-0 md:mt-10 md:w-[80%]'>
                         <Slider.default {...settings}>
                             <div>
-                                <img src={BannerImg} alt="" />
+                                <button type='button' onClick={() => navigate('/shop?category=smartphones')} className='block w-full cursor-pointer'>
+                                    <img src={BannerImg} alt='iPhone 14 Series offer' />
+                                </button>
                             </div>
                             <div>
-                                <img src={BannerImg} alt="" />
+                                <button type='button' onClick={() => navigate('/shop?category=smartphones')} className='block w-full cursor-pointer'>
+                                    <img src={BannerImg} alt='iPhone 14 Series offer' />
+                                </button>
                             </div>
                             <div>
-                                <img src={BannerImg} alt="" />
+                                <button type='button' onClick={() => navigate('/shop?category=smartphones')} className='block w-full cursor-pointer'>
+                                    <img src={BannerImg} alt='iPhone 14 Series offer' />
+                                </button>
                             </div>
                             <div>
-                                <img src={BannerImg} alt="" />
+                                <button type='button' onClick={() => navigate('/shop?category=smartphones')} className='block w-full cursor-pointer'>
+                                    <img src={BannerImg} alt='iPhone 14 Series offer' />
+                                </button>
                             </div>
                         </Slider.default>
                     </div>
