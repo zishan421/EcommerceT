@@ -16,7 +16,10 @@ const menuGroups = [
 ]
 const inputClass = 'mt-2 h-12.5 w-full rounded bg-[#F5F5F5] px-4 text-base outline-none placeholder:text-black/50'
 
-const FormInput = ({ name, label, type = 'text', formData, onChange }) => <label className='text-base'>{label}<input type={type} name={name} value={formData[name]} onChange={onChange} placeholder={label} className={inputClass} /></label>
+const FormInput = ({ name, label, type = 'text', formData, onChange, hideLabel = false }) => {
+  const input = <input type={type} name={name} value={formData[name]} onChange={onChange} placeholder={label} className={inputClass} />
+  return hideLabel ? input : <label className='text-base'>{label}{input}</label>
+}
 
 const AccountMenu = ({ title, items, activeSection, onSelect }) => <section><h2 className='text-base font-medium'>{title}</h2><ul className='mt-4 space-y-2 pl-4'>{items.map((item) => <li key={item}><button type='button' onClick={() => onSelect(item)} className={`cursor-pointer text-left text-base ${activeSection === item ? 'text-primary' : 'text-black/50'}`}>{item}</button></li>)}</ul></section>
 
@@ -61,7 +64,7 @@ const Account = () => {
                 <fieldset className='mt-5'>
                   <legend className='text-base'>Password Changes</legend>
                   <div className='mt-2 space-y-4'>
-                    {passwordFields.map(([name, label]) => <FormInput key={name} name={name} label={label} type='password' formData={formData} onChange={handleChange} />)}
+                    {passwordFields.map(([name, label]) => <FormInput key={name} name={name} label={label} type='password' hideLabel formData={formData} onChange={handleChange} />)}
                   </div>
                 </fieldset>
                 <div className='mt-8 flex items-center justify-end gap-8'>
