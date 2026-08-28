@@ -7,9 +7,10 @@ import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 import { HiOutlineMenuAlt2, HiOutlineX } from "react-icons/hi";
 import { BiCategory } from "react-icons/bi";
 import { RiArrowRightSLine } from "react-icons/ri";
-import { NavLink, useNavigate } from "react-router";
+import { NavLink, useLocation, useNavigate } from "react-router";
 import { useSelector } from 'react-redux';
 import { categories } from '../data/categories';
+import { RiAccountCircleFill } from "react-icons/ri";
 
 const navItems = [
   { label: 'Home', to: '/', end: true },
@@ -65,23 +66,22 @@ const NavLinks = ({ mobile = false, onClick }) => {
   )
 }
 
-const ActionButton = ({ icon: Icon, label, count, onClick }) => (
+const ActionButton = ({ icon: Icon, label, count, onClick, active }) => (
   <button type='button' onClick={onClick} aria-label={label} className='relative cursor-pointer'>
-    <Icon className='text-[32px]' />
-    <span className='absolute -right-2 -top-2 flex size-5 items-center justify-center rounded-full bg-primary text-xs text-white'>
-      {count}
-    </span>
+    <Icon className={`text-[32px] ${active ? 'text-primary' : ''}`} />
+    {count !== undefined && <span className='absolute -right-2 -top-2 flex size-5 items-center justify-center rounded-full bg-primary text-xs text-white'>{count}</span>}
   </button>
 )
 
-const Actions = ({ items, onNavigate }) => (
+const Actions = ({ items, onNavigate, activePath }) => (
   <div className='flex gap-4 items-center'>
-    {items.map((item) => <ActionButton key={item.path} {...item} onClick={() => onNavigate(item.path)} />)}
+    {items.map((item) => <ActionButton key={item.path} {...item} active={item.path === activePath} onClick={() => onNavigate(item.path)} />)}
   </div>
 )
 
 const NavBar = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isCategoryOpen, setIsCategoryOpen] = useState(false)
 
@@ -106,6 +106,7 @@ const NavBar = () => {
   const actions = [
     { icon: CiHeart, label: 'Open wishlist', count: wishlist.length, path: '/wishlist' },
     { icon: IoCartOutline, label: 'Open cart', count: data.length, path: '/cart' },
+    { icon: RiAccountCircleFill, label: 'Open account', path: '/account' },
   ]
 
   return (
@@ -118,7 +119,7 @@ const NavBar = () => {
           <NavLinks />
           <div className='hidden md:flex gap-6 items-center'>
             <SearchBox />
-            <Actions items={actions} onNavigate={goTo} />
+            <Actions items={actions} onNavigate={goTo} activePath={location.pathname} />
           </div>
           <button
             type='button'
@@ -171,7 +172,7 @@ const NavBar = () => {
           <SearchBox mobile />
           <NavLinks mobile onClick={closeMenu} />
           <div className='mt-10 flex gap-6 border-t pt-6'>
-            <Actions items={actions} onNavigate={goTo} />
+            <Actions items={actions} onNavigate={goTo} activePath={location.pathname} />
           </div>
         </aside>
       </div>

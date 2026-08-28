@@ -7,6 +7,7 @@ import Cart from "./components/Cart";
 import Wishlist from "./components/Wishlist";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import Account from "./pages/Account";
 
 export const Router = createBrowserRouter([
    {
@@ -20,6 +21,7 @@ export const Router = createBrowserRouter([
       { path: "wishlist", Component: Wishlist },
       { path: "signup", Component: Signup },
       { path: "login", Component: Login },
+      { path: "account", Component: Account },
       
     ],
   },
