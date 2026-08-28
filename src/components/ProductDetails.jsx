@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Container from './Container'
 import BreadCrumbs from './BreadCrumbs'
-import img1 from '../assets/Frame1.png'
-import img2 from '../assets/Frame2.png'
 import GamePad from '../assets/gamepad.png'
 import KeyBoard from '../assets/keyboard.png'
 import Monitor from '../assets/monitor.png'
@@ -67,6 +65,12 @@ const ProductDetails = () => {
 
     useEffect(() => {
         const fetchProduct = async () => {
+            setLoading(true)
+            setProduct(null)
+            setImages([])
+            setSelectedImage(null)
+            setQuantity(1)
+
             const applyProduct = (data) => {
                 const options = getProductOptions(data, id)
                 setProduct(data)
@@ -76,14 +80,18 @@ const ProductDetails = () => {
                 setSelectedSize(options.sizes[0] ?? null)
             }
 
-            if (location.state?.product) {
-                applyProduct(location.state.product)
+            const routedProduct = location.state?.product
+            if (routedProduct && String(routedProduct.id) === String(id)) {
+                applyProduct(routedProduct)
                 setLoading(false)
                 return
             }
 
             try {
                 const response = await fetch(`https://dummyjson.com/products/${id}`)
+                if (!response.ok) {
+                    throw new Error(`Product request failed with ${response.status}`)
+                }
                 const data = await response.json()
                 applyProduct(data)
             } catch (error) {
@@ -134,7 +142,9 @@ const ProductDetails = () => {
                                     </button>
                                 ))
                             ) : (
-                                <img className='w-34.5 h-42 object-contain' src={img2} alt="Product thumbnail" />
+                                <button type='button' onClick={() => setSelectedImage(product.thumbnail)} className={`block cursor-pointer border ${selectedImage === product.thumbnail ? 'border-black' : 'border-transparent'}`}>
+                                    <img className='w-34.5 h-42 object-contain' src={product.thumbnail} alt={product.title || 'Product thumbnail'} />
+                                </button>
                             )}
                         </div>
                         <div>

@@ -18,16 +18,32 @@ const navItems = [
   { label: 'Sign Up', to: '/signup' },
 ]
 
-const SearchBox = ({ mobile = false }) => (
-  <div className={`relative bg-[#F5F5F5] ${mobile ? 'mt-6' : 'py-1.75 pl-5'}`}>
-    <input
-      type='text'
-      className={mobile ? 'w-full py-3 pl-4 pr-11 outline-none' : 'pr-17.5'}
-      placeholder='What are you looking for?'
-    />
-    <HiOutlineMagnifyingGlass className={`absolute right-3 ${mobile ? 'top-3' : 'top-2'} text-2xl`} />
-  </div>
-)
+const SearchBox = ({ mobile = false }) => {
+  const navigate = useNavigate()
+  const [query, setQuery] = useState('')
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const searchTerm = query.trim()
+    navigate(searchTerm ? `/shop?q=${encodeURIComponent(searchTerm)}` : '/shop')
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className={`relative bg-[#F5F5F5] ${mobile ? 'mt-6' : 'py-1.75 pl-5'}`}>
+      <input
+        type='text'
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
+        className={mobile ? 'w-full py-3 pl-4 pr-11 outline-none' : 'pr-17.5'}
+        placeholder='What are you looking for?'
+        aria-label='Search products'
+      />
+      <button type='submit' aria-label='Search products' className={`absolute right-3 ${mobile ? 'top-3' : 'top-2'} cursor-pointer`}>
+        <HiOutlineMagnifyingGlass className='text-2xl' />
+      </button>
+    </form>
+  )
+}
 
 const NavLinks = ({ mobile = false, onClick }) => {
   const Wrapper = mobile ? 'nav' : 'ul'

@@ -55,11 +55,7 @@ const Card = ({ id, imgSrc, percent, title, price, disPrice, review, rating, pro
     };
 
     const handleProductDetails = () => {
-        if (id) {
-            navigate(`/productDetails/${id}`)
-        } else {
-            navigate('/productDetails')
-        }
+        navigate(`/productDetails/${productId}`, { state: { product } })
     }
 
     let dispatch = useDispatch()

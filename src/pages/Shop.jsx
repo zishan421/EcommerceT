@@ -15,6 +15,7 @@ const Shop = () => {
     const [selectedCategory, setSelectedCategory] = useState(null)
     const [searchParams] = useSearchParams()
     const category = searchParams.get('category')
+    const searchQuery = searchParams.get('q')
 
         const dispatch = useDispatch()
         const products = useSelector(state => state.Products.value) 
@@ -22,7 +23,9 @@ const Shop = () => {
     useEffect(() => {
         setLoading(true)
         const isSpeakerSearch = category === 'speakers'
-        const url = category
+        const url = searchQuery
+            ? `https://dummyjson.com/products/search?q=${encodeURIComponent(searchQuery)}`
+            : category
             ? (isSpeakerSearch
                 ? 'https://dummyjson.com/products/search?q=speaker'
                 : `https://dummyjson.com/products/category/${category}`)
@@ -33,10 +36,10 @@ const Shop = () => {
             .then((data) => {
                 const productsList = Array.isArray(data.products) ? data.products : []
                 dispatch(ProductReducer(productsList))
-                setSelectedCategory(isSpeakerSearch ? null : category)
+                setSelectedCategory(searchQuery || isSpeakerSearch ? null : category)
             })
             .then(()=> setLoading(false))
-    }, [category, dispatch])
+    }, [category, dispatch, searchQuery])
 
    
     const uniqueCategory = [...new Set((products || []).map((item)=> item.category))]
