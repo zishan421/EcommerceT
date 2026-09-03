@@ -22,7 +22,7 @@ const musicProduct = {
     thumbnail: JBL,
     images: [JBL],
     reviews: [],
-}
+} 
 
 const BestSelling = () => {
 
